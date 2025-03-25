@@ -1,0 +1,58 @@
+version: 0.2
+
+env:
+  variables:
+    FRONTEND_S3_BUCKET: "deployedapas"  # S3 bucket name for frontend
+    LAMBDA_FUNCTIONS:
+      - "index1.py"
+      - "index2.py"
+      - "index3.py"
+      - "index4.py"
+      - "index5.py"
+    REGION: "us-east-1"  # AWS region for deployment
+
+phases:
+  install:
+    runtime-versions:
+      python: 3.8  # Modify this to your specific Python runtime version
+    commands:
+      - echo "Installing Python dependencies for Lambda functions"
+      - cd backend
+      #- pip install -r requirements.txt -t .  # Install dependencies for Lambda functions
+      - cd ../frontend
+      - echo "Installing frontend dependencies"
+      #- npm install  # Modify this if you're using a frontend framework like React or Vue
+  
+  pre_build:
+    commands:
+      - echo "Running Pre-Build Commands"
+      - cd frontend
+      #- npm run build  # Build the frontend (this is specific to frameworks like React or Vue)
+  
+  build:
+    commands:
+      - echo "Building backend (Lambda) and frontend"
+      - cd backend
+      - zip -r lambda-functions.zip .  # Create a zip package of the backend Lambda functions
+      - cd ../frontend
+      - aws s3 sync build/ s3://$FRONTEND_S3_BUCKET/  # Sync the frontend build folder to S3
+  
+  post_build:
+    commands:
+      - echo "Running Post-Build Commands"
+      - echo "Deploying Lambda functions"
+      - |
+        for function in ${LAMBDA_FUNCTIONS[@]}; do
+          aws lambda update-function-code --function-name $function --zip-file fileb://../backend/lambda-functions.zip --region $REGION
+        done
+      - echo "Deployment complete!"
+
+artifacts:
+  files:
+    - lambda-functions.zip  # Lambda function deployment package
+  discard-paths: yes  # Optionally discard paths from the artifact location
+
+cache:
+  paths:
+    - 'frontend/node_modules/**/*'
+    - 'backend/*.py'  # Caches Python files to speed up subsequent builds
