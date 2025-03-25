@@ -25,7 +25,7 @@ phases:
       - pwd
       - echo "Listing files in pre_build:"
       - ls -al
-      - cd frontend  # Ensure we're in the correct directory
+      # Removed redundant `cd frontend`
       #- npm run build  # Build the frontend (this is specific to frameworks like React or Vue)
   
   build:
