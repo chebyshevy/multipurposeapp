@@ -16,7 +16,7 @@ phases:
       #- pip install -r requirements.txt -t .  # Install dependencies for Lambda functions
       - cd ../frontend  # Correct path to the frontend directory
       - echo "Installing frontend dependencies"
-      #- npm install  # Modify this if you're using a frontend framework like React or Vue
+      - npm install  # Uncomment if you're using a frontend framework like React or Vue
   
   pre_build:
     commands:
@@ -25,14 +25,16 @@ phases:
       - pwd
       - echo "Listing files in pre_build:"
       - ls -al
-      # Removed redundant `cd frontend`
-      #- npm run build  # Build the frontend (this is specific to frameworks like React or Vue)
+      # Debugging: Print directory structure
+      - echo "Listing directories:"
+      - ls -alh
+      #- npm run build  # Uncomment if you're using a framework like React or Vue to build the frontend
   
   build:
     commands:
       - echo "Building backend (Lambda) and frontend"
       - cd backend
-      - zip -r lambda-functions.zip .  # Create a zip package of the backend Lambda functions
+      - zip -r /tmp/lambda-functions.zip .  # Create a zip package of the backend Lambda functions
       - cd ../frontend
       - aws s3 sync build/ s3://$FRONTEND_S3_BUCKET/  # Sync the frontend build folder to S3
   
@@ -42,7 +44,7 @@ phases:
       - echo "Deploying Lambda functions"
       - |
         for function in $LAMBDA_FUNCTIONS; do
-          aws lambda update-function-code --function-name $function --zip-file fileb://../backend/lambda-functions.zip --region $REGION
+          aws lambda update-function-code --function-name $function --zip-file fileb:///tmp/lambda-functions.zip --region $REGION
         done
       - echo "Deployment complete!"
 
@@ -50,8 +52,3 @@ artifacts:
   files:
     - lambda-functions.zip  # Lambda function deployment package
   discard-paths: yes  # Optionally discard paths from the artifact location
-
-cache:
-  paths:
-    - 'frontend/node_modules/**/*'
-    - 'backend/*.py'  # Caches Python files to speed up subsequent builds
