@@ -3,12 +3,7 @@ version: 0.2
 env:
   variables:
     FRONTEND_S3_BUCKET: "deployedapas"  # S3 bucket name for frontend
-    LAMBDA_FUNCTIONS:
-      - "index1.py"
-      - "index2.py"
-      - "index3.py"
-      - "index4.py"
-      - "index5.py"
+    LAMBDA_FUNCTIONS: "index1.py index2.py index3.py index4.py index5.py"  # Space-separated string of Lambda functions
     REGION: "us-east-1"  # AWS region for deployment
 
 phases:
@@ -42,7 +37,7 @@ phases:
       - echo "Running Post-Build Commands"
       - echo "Deploying Lambda functions"
       - |
-        for function in ${LAMBDA_FUNCTIONS[@]}; do
+        for function in $LAMBDA_FUNCTIONS; do
           aws lambda update-function-code --function-name $function --zip-file fileb://../backend/lambda-functions.zip --region $REGION
         done
       - echo "Deployment complete!"
