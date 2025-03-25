@@ -15,9 +15,8 @@ phases:
       - cd backend
       #- pip install -r requirements.txt -t .  # Install dependencies for Lambda functions
       - cd ../frontend  # Correct path to the frontend directory
-      - echo "Installing frontend dependencies"
-      - npm install  # Uncomment if you're using a frontend framework like React or Vue
-  
+      - echo "No npm needed, just copying HTML files"
+
   pre_build:
     commands:
       - echo "Running Pre-Build Commands"
@@ -25,10 +24,6 @@ phases:
       - pwd
       - echo "Listing files in pre_build:"
       - ls -al
-      # Debugging: Print directory structure
-      - echo "Listing directories:"
-      - ls -alh
-      #- npm run build  # Uncomment if you're using a framework like React or Vue to build the frontend
   
   build:
     commands:
@@ -36,7 +31,7 @@ phases:
       - cd backend
       - zip -r /tmp/lambda-functions.zip .  # Create a zip package of the backend Lambda functions
       - cd ../frontend
-      - aws s3 sync build/ s3://$FRONTEND_S3_BUCKET/  # Sync the frontend build folder to S3
+      - aws s3 sync . s3://$FRONTEND_S3_BUCKET/  # Sync all frontend files (HTML, CSS, JS) to S3
   
   post_build:
     commands:
