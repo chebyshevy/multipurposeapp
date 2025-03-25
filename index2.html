@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News API</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        .news-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+        .news-item {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin: 10px;
+            padding: 15px;
+            width: 30%;
+        }
+        .news-item h3 {
+            margin: 0;
+            font-size: 18px;
+            color: #333;
+        }
+        .news-item p {
+            color: #666;
+        }
+        .news-item a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+        .loading {
+            text-align: center;
+            font-size: 18px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Latest News</h1>
+
+    <div id="news-container" class="news-container">
+        <div class="loading" id="loading">Loading news...</div>
+    </div>
+
+    <script>
+        const apiUrl = "https://x0ntwugbcg.execute-api.us-east-1.amazonaws.com/dev/news"; // Replace with your actual API Gateway URL
+
+        // Function to fetch news data
+        async function fetchNews() {
+            try {
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+                
+                if (response.ok && data.status === 'ok') {
+                    displayNews(data.articles);
+                } else {
+                    document.getElementById('loading').textContent = 'Failed to load news.';
+                }
+            } catch (error) {
+                console.error('Error fetching news:', error);
+                document.getElementById('loading').textContent = 'Error loading news.';
+            }
+        }
+
+        // Function to display news on the page
+        function displayNews(articles) {
+            const newsContainer = document.getElementById('news-container');
+            newsContainer.innerHTML = '';  // Clear loading text
+
+            articles.forEach(article => {
+                const newsItem = document.createElement('div');
+                newsItem.className = 'news-item';
+                
+                newsItem.innerHTML = `
+                    <h3>${article.title}</h3>
+                    <p>${article.description ? article.description : 'No description available.'}</p>
+                    <a href="${article.url}" target="_blank">Read more</a>
+                `;
+
+                newsContainer.appendChild(newsItem);
+            });
+        }
+
+        // Call the function to fetch news when the page loads
+        window.onload = fetchNews;
+    </script>
+
+</body>
+</html>

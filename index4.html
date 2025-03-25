@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        input[type="text"] {
+            padding: 8px;
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #weatherInfo {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Weather Information</h1>
+
+    <!-- Input Form -->
+    <input type="text" id="city" placeholder="Enter city name" value="New York">
+    <button onclick="getWeather()">Get Weather</button>
+
+    <div id="weatherInfo"></div>
+
+    <script>
+        // Function to fetch weather data
+        function getWeather() {
+            var city = document.getElementById("city").value;
+            var apiUrl = "https://x0ntwugbcg.execute-api.us-east-1.amazonaws.com/dev/weather";  // Replace with your actual API Gateway URL
+
+            // Prepare the request with the city as a query parameter
+            var url = apiUrl + "?city=" + encodeURIComponent(city);
+
+            // Make an AJAX request to the Lambda function via API Gateway
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    console.log("API Response Data:", data); // Log the entire response data
+
+                    // Check if weather data is returned
+                    if (data.error) {
+                        document.getElementById("weatherInfo").innerHTML = "Error: " + data.error;
+                    } else {
+                        // Display the weather information
+                        if (data.temperature !== undefined && data.weather !== undefined) {
+                            var weatherDetails = `
+                                <h3>Weather in ${data.city}</h3>
+                                <p>Temperature: ${data.temperature}° C</p>
+                                <p>Weather: ${data.weather}</p>
+                            `;
+                            document.getElementById("weatherInfo").innerHTML = weatherDetails;
+                        } else {
+                            document.getElementById("weatherInfo").innerHTML = "Error: Invalid weather data returned.";
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error("Error fetching weather data:", error);
+                    document.getElementById("weatherInfo").innerHTML = "Error fetching weather data.";
+                });
+        }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Currency Exchange App</title>
+    <script>
+        function getExchangeRate() {
+            // Get values from input fields
+            const base = document.getElementById('baseCurrency').value;
+            const amount = document.getElementById('amount').value;
+            const target = document.getElementById('targetCurrency').value;
+    
+            // Construct the API URL with query string parameters
+            const apiUrl = `https://x0ntwugbcg.execute-api.us-east-1.amazonaws.com/dev/exchange-rate?base=${base}&amount=${amount}&target=${target}`;
+    
+            // Make the HTTP request to the API Gateway endpoint
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    // Display the converted amount
+                    const result = `
+                        Base: ${data.base}
+                        Target: ${data.target}
+                        Rate: ${data.rate}
+                        Amount: ${data.amount}
+                        Converted Amount: ${data.converted_amount}
+                    `;
+                    document.getElementById('result').innerText = result;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('result').innerText = "Error fetching data. Please check your input or try again later.";
+                });
+        }
+    </script>
+</head>
+<body>
+    <h1>Currency Exchange</h1>
+    
+    <!-- Input fields for base currency and amount -->
+    <label for="baseCurrency">Base Currency (e.g., USD):</label>
+    <input type="text" id="baseCurrency" value="USD"><br><br>
+
+    <label for="amount">Amount:</label>
+    <input type="number" id="amount" value="100"><br><br>
+
+    <label for="targetCurrency">Target Currency (e.g., EUR):</label>
+    <input type="text" id="targetCurrency" value="EUR"><br><br>
+    
+    <!-- Button to fetch exchange rate -->
+    <button onclick="getExchangeRate()">Get Exchange Rate</button>
+    
+    <!-- Result will be shown here -->
+    <h3>Exchange Rate Result:</h3>
+    <pre id="result"></pre>
+</body>
+</html>

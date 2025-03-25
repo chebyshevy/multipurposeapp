@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trivia App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        select, button {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            font-size: 16px;
+        }
+        .questions {
+            margin-top: 20px;
+        }
+        .question {
+            background-color: #f9f9f9;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+        }
+        .question h3 {
+            margin: 0;
+            font-size: 18px;
+        }
+        .answers {
+            margin-top: 10px;
+        }
+        .answer {
+            padding: 5px;
+            background-color: #e0e0e0;
+            margin: 5px 0;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .correct {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .incorrect {
+            background-color: #f44336;
+            color: white;
+        }
+        .revealed-answer {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Quiz</h1>
+        <form id="triviaForm">
+            <div class="form-group">
+                <label for="category">Select Category:</label>
+                <select id="category" name="category">
+                    <option value="9">General Knowledge</option>
+                    <option value="11">Entertainment: Film</option>
+                    <option value="12">Entertainment: Music</option>
+                    <option value="22">Geography</option>
+                    <option value="23">History</option>
+                    <option value="24">Art</option>
+                    <option value="25">Animals</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="difficulty">Select Difficulty:</label>
+                <select id="difficulty" name="difficulty">
+                    <option value="easy">Easy</option>
+                    <option value="medium">Medium</option>
+                    <option value="hard">Hard</option>
+                </select>
+            </div>
+
+            <button type="submit">Get Questions</button>
+        </form>
+
+        <div class="questions" id="questions"></div>
+    </div>
+
+    <script>
+        const form = document.getElementById("triviaForm");
+        const questionsContainer = document.getElementById("questions");
+
+        form.addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            // Get the values from the form
+            const category = document.getElementById("category").value;
+            const difficulty = document.getElementById("difficulty").value;
+
+            // Define the API URL with query parameters
+            const apiUrl = `https://x0ntwugbcg.execute-api.us-east-1.amazonaws.com/dev/quiz?category=${category}&difficulty=${difficulty}`;
+
+            // Make the API request
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    // Clear previous questions
+                    questionsContainer.innerHTML = '';
+
+                    // Display the questions
+                    if (data.length > 0) {
+                        data.forEach(question => {
+                            const questionDiv = document.createElement("div");
+                            questionDiv.classList.add("question");
+
+                            const questionText = document.createElement("h3");
+                            questionText.textContent = question.question;
+                            questionDiv.appendChild(questionText);
+
+                            const answersDiv = document.createElement("div");
+                            answersDiv.classList.add("answers");
+
+                            // Shuffle answers
+                            const allAnswers = [question.correct_answer, ...question.incorrect_answers];
+                            const shuffledAnswers = shuffle(allAnswers);
+
+                            // Add answer options
+                            shuffledAnswers.forEach(answer => {
+                                const answerDiv = document.createElement("div");
+                                answerDiv.classList.add("answer");
+                                answerDiv.textContent = answer;
+
+                                // Add event listener to check answer when clicked
+                                answerDiv.addEventListener("click", () => {
+                                    checkAnswer(answerDiv, question.correct_answer, shuffledAnswers);
+                                });
+
+                                answersDiv.appendChild(answerDiv);
+                            });
+
+                            questionDiv.appendChild(answersDiv);
+                            questionsContainer.appendChild(questionDiv);
+                        });
+                    } else {
+                        questionsContainer.innerHTML = "<p>No questions found.</p>";
+                    }
+                })
+                .catch(error => {
+                    questionsContainer.innerHTML = "<p>There was an error fetching questions. Please try again later.</p>";
+                    console.error("Error fetching trivia questions:", error);
+                });
+        });
+
+        // Function to shuffle answers
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        // Function to check if the selected answer is correct
+        function checkAnswer(selectedAnswer, correctAnswer, allAnswers) {
+            // Disable further clicks
+            const allAnswerElements = selectedAnswer.parentElement.querySelectorAll(".answer");
+            allAnswerElements.forEach(el => el.style.pointerEvents = "none");
+
+            if (selectedAnswer.textContent === correctAnswer) {
+                selectedAnswer.classList.add("correct");
+                selectedAnswer.parentElement.innerHTML += `<p class="revealed-answer">Correct!</p>`;
+            } else {
+                selectedAnswer.classList.add("incorrect");
+                selectedAnswer.parentElement.innerHTML += `<p class="revealed-answer">Incorrect! The correct answer was: ${correctAnswer}</p>`;
+            }
+
+            // Reveal the correct answer after selection
+            allAnswers.forEach(answer => {
+                if (answer === correctAnswer) {
+                    const correctAnswerDiv = Array.from(selectedAnswer.parentElement.children).find(div => div.textContent === answer);
+                    correctAnswerDiv.classList.add("correct");
+                }
+            });
+        }
+    </script>
+
+</body>
+</html>
