@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>All Apps in One Page</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+  <style>
+    /* General Styles */
+    body {
+      font-family: 'Roboto', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to right, #6a11cb, #2575fc);
+      color: #fff;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    /* Welcome Intro */
+    .intro {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      height: 100%;
+      text-align: center;
+      opacity: 1;
+      transition: opacity 1s ease-out;
+      animation: fadeIn 2s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    .intro h1 {
+      font-size: 4vw;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    .intro p {
+      font-size: 2vw;
+      font-weight: 400;
+      margin-bottom: 40px;
+    }
+
+    .intro button {
+      background-color: #ffd700;
+      color: #000;
+      padding: 12px 30px;
+      border: none;
+      font-size: 1.2vw;
+      font-weight: bold;
+      cursor: pointer;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+    }
+
+    .intro button:hover {
+      background-color: #ffcd00;
+    }
+
+    header {
+      background-color: rgba(0, 0, 0, 0.7);
+      padding: 20px;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      left: 0;
+      z-index: 1000;
+    }
+
+    nav ul {
+      display: flex;
+      justify-content: center;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      flex-wrap: wrap;
+    }
+
+    nav ul li {
+      margin: 10px 15px;
+      position: relative;
+    }
+
+    nav ul li a {
+      text-decoration: none;
+      color: #fff;
+      font-weight: bold;
+      font-size: 1.2vw;
+      display: flex;
+      align-items: center;
+      transition: color 0.3s ease;
+    }
+
+    nav ul li a:hover {
+      color: #ffd700;
+    }
+
+    nav ul li a i {
+      margin-right: 8px;
+      font-size: 1.5vw;
+    }
+
+    nav ul li a span {
+      margin-left: 10px;
+      font-size: 1.2vw;
+    }
+
+    main {
+      flex-grow: 1;
+      padding-top: 120px; /* To avoid overlap with fixed navbar */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      opacity: 0;
+      transition: opacity 1s ease-out;
+    }
+
+    .app {
+      display: none;
+      padding: 20px;
+      width: 90%;
+      max-width: 1200px;
+      border-radius: 15px;
+      background-color: #fff;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+    }
+
+    iframe {
+      width: 100%;
+      height: 60vh;
+      border: none;
+      border-radius: 10px;
+    }
+
+    .app.active {
+      display: block;
+      transform: scale(1.05);
+    }
+
+    .app-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* Mobile responsiveness */
+    @media (max-width: 768px) {
+      .intro h1 {
+        font-size: 6vw;
+      }
+
+      .intro p {
+        font-size: 4vw;
+      }
+
+      .intro button {
+        font-size: 4vw;
+        padding: 10px 25px;
+      }
+
+      nav ul li a {
+        font-size: 4vw;
+      }
+
+      iframe {
+        height: 50vh;
+      }
+    }
+
+    @media (max-width: 480px) {
+      nav ul {
+        flex-direction: column;
+      }
+
+      nav ul li {
+        margin: 10px 0;
+      }
+
+      .intro button {
+        font-size: 5vw;
+        padding: 15px 35px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="intro">
+    <h1>Welcome to Your Daily Apps</h1>
+    <p>Access useful apps like currency exchange, weather updates, jokes, news, and quizzes, all in one place!</p>
+    <button onclick="startApp()">Start Exploring</button>
+  </div>
+
+  <header>
+    <nav>
+      <ul>
+        <li><a href="#app1" onclick="loadApp(1)"><i class="fas fa-dollar-sign"></i><span>Currency Exchange</span></a></li>
+        <li><a href="#app2" onclick="loadApp(2)"><i class="fas fa-cloud-sun"></i><span>News</span></a></li>
+        <li><a href="#app3" onclick="loadApp(3)"><i class="fas fa-smile"></i><span>Quiz</span></a></li>
+        <li><a href="#app4" onclick="loadApp(4)"><i class="fas fa-newspaper"></i><span>Weather</span></a></li>
+        <li><a href="#app5" onclick="loadApp(5)"><i class="fas fa-puzzle-piece"></i><span>Jokes</span></a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="appContainer">
+    <div id="app1" class="app">
+      <iframe src="https://s3.us-east-1.amazonaws.com/app.sahsanlab.click/index1.html" id="iframeApp1"></iframe>
+    </div>
+    <div id="app2" class="app">
+      <iframe src="https://s3.us-east-1.amazonaws.com/app.sahsanlab.click/index2.html" id="iframeApp2"></iframe>
+    </div>
+    <div id="app3" class="app">
+      <iframe src="https://s3.us-east-1.amazonaws.com/app.sahsanlab.click/index3.html" id="iframeApp3"></iframe>
+    </div>
+    <div id="app4" class="app">
+      <iframe src="https://s3.us-east-1.amazonaws.com/app.sahsanlab.click/index4.html" id="iframeApp4"></iframe>
+    </div>
+    <div id="app5" class="app">
+      <iframe src="https://s3.us-east-1.amazonaws.com/app.sahsanlab.click/index5.html" id="iframeApp5"></iframe>
+    </div>
+  </main>
+
+  <script>
+    function startApp() {
+      document.querySelector('.intro').style.display = 'none';
+      document.querySelector('main').style.opacity = '1';
+      loadApp(1); 
+    }
+
+    function loadApp(appNumber) {
+      let allApps = document.querySelectorAll('.app');
+      allApps.forEach(app => app.classList.remove('active', 'fade-in'));
+
+      let selectedApp = document.getElementById(`app${appNumber}`);
+      selectedApp.classList.add('active', 'fade-in');
+    }
+  </script>
+</body>
+</html>
