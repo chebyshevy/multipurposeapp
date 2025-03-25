@@ -14,19 +14,18 @@ phases:
       - echo "Installing Python dependencies for Lambda functions"
       - cd backend
       #- pip install -r requirements.txt -t .  # Install dependencies for Lambda functions
-      - cd ..
-      - echo "Current directory:"
-      - pwd
-      - echo "Listing files:"
-      - ls -al
-      - cd frontend  # Make sure frontend exists at this point
+      - cd ../frontend  # Correct path to the frontend directory
       - echo "Installing frontend dependencies"
       #- npm install  # Modify this if you're using a frontend framework like React or Vue
   
   pre_build:
     commands:
       - echo "Running Pre-Build Commands"
-      - cd frontend
+      - echo "Current directory in pre_build:"
+      - pwd
+      - echo "Listing files in pre_build:"
+      - ls -al
+      - cd frontend  # Ensure we're in the correct directory
       #- npm run build  # Build the frontend (this is specific to frameworks like React or Vue)
   
   build:
