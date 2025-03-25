@@ -3,7 +3,7 @@ version: 0.2
 env:
   variables:
     FRONTEND_S3_BUCKET: "deployedapas"  # S3 bucket name for frontend
-    LAMBDA_FUNCTIONS: "index1 index2 index3 index4 index5"  # Space-separated string of Lambda functions
+    LAMBDA_FUNCTIONS: "GetNewsFromAPI weatherLambda TriviaQuestionsFunction TellJokeFunction CurrencyExchangeFunction"  # Space-separated string of Lambda functions
     REGION: "us-east-1"  # AWS region for deployment
 
 phases:
