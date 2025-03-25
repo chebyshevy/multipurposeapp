@@ -28,7 +28,7 @@ phases:
   build:
     commands:
       - echo "Building backend (Lambda) and frontend"
-      - cd backend
+      - cd ../backend
       - zip -r /tmp/lambda-functions.zip .  # Create a zip package of the backend Lambda functions
       - cd ../frontend
       - aws s3 sync . s3://$FRONTEND_S3_BUCKET/  # Sync all frontend files (HTML, CSS, JS) to S3
