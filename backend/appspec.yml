@@ -6,27 +6,37 @@ Resources:
         Name: "CurrencyExchangeFunction"
         Alias: "Live"
         CurrentVersion: "$LATEST"
+        Code:
+          S3Location: !Sub 's3://codepipeline-us-east-1-247649673474/lambda-functions.zip'
   - TargetService:
       Type: AWS::Lambda::Function
       Properties:
         Name: "TellJokeFunction"
         Alias: "Live"
         CurrentVersion: "$LATEST"
+        Code:
+          S3Location: !Sub 's3://codepipeline-us-east-1-247649673474/lambda-functions.zip'
   - TargetService:
       Type: AWS::Lambda::Function
       Properties:
         Name: "TriviaQuestionsFunction"
         Alias: "Live"
         CurrentVersion: "$LATEST"
+        Code:
+          S3Location: !Sub 's3://codepipeline-us-east-1-247649673474/lambda-functions.zip'
   - TargetService:
       Type: AWS::Lambda::Function
       Properties:
         Name: "weatherLambda"
         Alias: "Live"
         CurrentVersion: "$LATEST"
+        Code:
+          S3Location: !Sub 's3://codepipeline-us-east-1-247649673474/lambda-functions.zip'
   - TargetService:
       Type: AWS::Lambda::Function
       Properties:
         Name: "GetNewsFromAPI"
         Alias: "Live"
         CurrentVersion: "$LATEST"
+        Code:
+          S3Location: !Sub 's3://codepipeline-us-east-1-247649673474/lambda-functions.zip'
