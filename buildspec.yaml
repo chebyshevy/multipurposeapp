@@ -29,7 +29,7 @@ phases:
     commands:
       - echo "Building backend (Lambda) and frontend"
       - cd ../backend
-      - zip -r lambda-functions.zip .  # Create a zip package of the backend Lambda functions in the current directory (no /tmp)
+      - zip -r /tmp/lambda-functions.zip .  # Create a zip package of the backend Lambda functions
       - cd ../frontend
       - aws s3 sync . s3://$FRONTEND_S3_BUCKET/  # Sync all frontend files (HTML, CSS, JS) to S3
   
@@ -39,11 +39,12 @@ phases:
       - echo "Deploying Lambda functions"
       - |
         for function in $LAMBDA_FUNCTIONS; do
-          aws lambda update-function-code --function-name $function --zip-file fileb://lambda-functions.zip --region $REGION
+          aws lambda update-function-code --function-name $function --zip-file fileb:///tmp/lambda-functions.zip --region $REGION
         done
       - echo "Deployment complete!"
 
 artifacts:
   files:
     - lambda-functions.zip  # Lambda function deployment package
+  base-directory: /tmp  # Specify where the artifact is located 
   discard-paths: yes  # Optionally discard paths from the artifact location
