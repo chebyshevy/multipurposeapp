@@ -32,9 +32,7 @@ phases:
       - zip -r /tmp/lambda-functions.zip .  # Create a zip package of the backend Lambda functions
       - cd ../frontend
       - aws s3 sync . s3://$FRONTEND_S3_BUCKET/  # Sync all frontend files (HTML, CSS, JS) to S3
-      - cd ../../  # Go back to the root directory
-      - cp appspec.yml /tmp/  # Ensure appspec.yml is included in the ZIP
-
+  
   post_build:
     commands:
       - echo "Running Post-Build Commands"
@@ -48,6 +46,5 @@ phases:
 artifacts:
   files:
     - lambda-functions.zip  # Lambda function deployment package
-    - appspec.yml  # Include appspec.yml file in the artifact
   base-directory: /tmp  # Specify where the artifact is located 
   discard-paths: yes  # Optionally discard paths from the artifact location
