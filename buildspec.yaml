@@ -46,4 +46,5 @@ phases:
 artifacts:
   files:
     - lambda-functions.zip  # Lambda function deployment package
+  base-directory: /tmp  # Specify where the artifact is located 
   discard-paths: yes  # Optionally discard paths from the artifact location
