@@ -1,0 +1,32 @@
+version: 0.0
+Resources:
+  - TargetService:
+      Type: AWS::Lambda::Function
+      Properties:
+        Name: "CurrencyExchangeFunction"
+        Alias: "Live"
+        CurrentVersion: "$LATEST"
+  - TargetService:
+      Type: AWS::Lambda::Function
+      Properties:
+        Name: "TellJokeFunction"
+        Alias: "Live"
+        CurrentVersion: "$LATEST"
+  - TargetService:
+      Type: AWS::Lambda::Function
+      Properties:
+        Name: "TriviaQuestionsFunction"
+        Alias: "Live"
+        CurrentVersion: "$LATEST"
+  - TargetService:
+      Type: AWS::Lambda::Function
+      Properties:
+        Name: "weatherLambda"
+        Alias: "Live"
+        CurrentVersion: "$LATEST"
+  - TargetService:
+      Type: AWS::Lambda::Function
+      Properties:
+        Name: "GetNewsFromAPI"
+        Alias: "Live"
+        CurrentVersion: "$LATEST"
