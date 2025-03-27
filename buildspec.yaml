@@ -34,7 +34,7 @@ phases:
       - cd ../frontend
       - aws s3 sync . s3://$FRONTEND_S3_BUCKET/  # Sync all frontend files (HTML, CSS, JS) to S3
       - cd ../../  # Go back to the root directory
-      - cp ./appspec.yml /tmp/  # Ensure appspec.yml is included in the ZIP
+      - cp /backend/appspec.yml /tmp/  # Ensure appspec.yml is included in the ZIP
 
   post_build:
     commands:
