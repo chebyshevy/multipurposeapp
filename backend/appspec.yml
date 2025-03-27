@@ -7,7 +7,7 @@ Resources:
         Alias: "Live"
         CurrentVersion: "$LATEST"
         Code:
-          S3Location: 's3://codepipeline-us-east-1-247649673474/multipurpose-app-pip/BuildArtif/nrW8BS3'
+          S3Location: 's3://codepipeline-us-east-1-247649673474/multipurpose-app-pip/BuildArtif/IE2vpEy/lambda-functions.zip'
   - TargetService:
       Type: AWS::Lambda::Function
       Properties:
@@ -15,7 +15,7 @@ Resources:
         Alias: "Live"
         CurrentVersion: "$LATEST"
         Code:
-          S3Location: 's3://codepipeline-us-east-1-247649673474/multipurpose-app-pip/BuildArtif/nrW8BS3'
+          S3Location: 's3://codepipeline-us-east-1-247649673474/multipurpose-app-pip/BuildArtif/IE2vpEy/lambda-functions.zip'
   - TargetService:
       Type: AWS::Lambda::Function
       Properties:
@@ -23,7 +23,7 @@ Resources:
         Alias: "Live"
         CurrentVersion: "$LATEST"
         Code:
-          S3Location: 's3://codepipeline-us-east-1-247649673474/multipurpose-app-pip/BuildArtif/nrW8BS3'
+          S3Location: 's3://codepipeline-us-east-1-247649673474/multipurpose-app-pip/BuildArtif/IE2vpEy/lambda-functions.zip'
   - TargetService:
       Type: AWS::Lambda::Function
       Properties:
@@ -31,7 +31,7 @@ Resources:
         Alias: "Live"
         CurrentVersion: "$LATEST"
         Code:
-          S3Location: 's3://codepipeline-us-east-1-247649673474/multipurpose-app-pip/BuildArtif/nrW8BS3'
+          S3Location: 's3://codepipeline-us-east-1-247649673474/multipurpose-app-pip/BuildArtif/IE2vpEy/lambda-functions.zip'
   - TargetService:
       Type: AWS::Lambda::Function
       Properties:
@@ -39,4 +39,4 @@ Resources:
         Alias: "Live"
         CurrentVersion: "$LATEST"
         Code:
-          S3Location: 's3://codepipeline-us-east-1-247649673474/multipurpose-app-pip/BuildArtif/nrW8BS3'
+          S3Location: 's3://codepipeline-us-east-1-247649673474/multipurpose-app-pip/BuildArtif/IE2vpEy/lambda-functions.zip'
