@@ -1,4 +1,5 @@
 version: 0.0
+
 Resources:
   - TargetService:
       Type: AWS::Lambda::Function
@@ -8,6 +9,7 @@ Resources:
         CurrentVersion: "$LATEST"
         Code:
           S3Location: 's3://deployedapas/lambda-functions.zip'
+
   - TargetService:
       Type: AWS::Lambda::Function
       Properties:
@@ -16,6 +18,7 @@ Resources:
         CurrentVersion: "$LATEST"
         Code:
           S3Location: 's3://deployedapas/lambda-functions.zip'
+
   - TargetService:
       Type: AWS::Lambda::Function
       Properties:
@@ -24,6 +27,7 @@ Resources:
         CurrentVersion: "$LATEST"
         Code:
           S3Location: 's3://deployedapas/lambda-functions.zip'
+
   - TargetService:
       Type: AWS::Lambda::Function
       Properties:
@@ -32,6 +36,7 @@ Resources:
         CurrentVersion: "$LATEST"
         Code:
           S3Location: 's3://deployedapas/lambda-functions.zip'
+
   - TargetService:
       Type: AWS::Lambda::Function
       Properties:
