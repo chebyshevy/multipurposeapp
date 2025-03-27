@@ -1,4 +1,3 @@
-
 version: 0.2
 
 env:
@@ -33,14 +32,12 @@ phases:
       - zip -r /tmp/lambda-functions.zip .  # Create a zip package of the backend Lambda functions
       - cd ../frontend
       - aws s3 sync . s3://$FRONTEND_S3_BUCKET/  # Sync all frontend files (HTML, CSS, JS) to S3
-      - cd ../../  # Go back to the root directory
-      - cp /backend/appspec.yml /tmp/  # Ensure appspec.yml is included in the ZIP
+      - cd ../backend/  # Go  to the backend directory
+      - cp appspec.yml /tmp/  # Ensure appspec.yml is included in the ZIP
 
   post_build:
     commands:
       - echo "Running Post-Build Commands"
-      - echo "Contents of /tmp after build:"
-      - ls -al /tmp
       - echo "Deploying Lambda functions"
       - |
         for function in $LAMBDA_FUNCTIONS; do
