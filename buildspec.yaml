@@ -2,52 +2,47 @@ version: 0.2
 
 env:
   variables:
-    FRONTEND_S3_BUCKET: "deployedapas"  # S3 bucket name for frontend
-    LAMBDA_FUNCTIONS: "GetNewsFromAPI weatherLambda TriviaQuestionsFunction TellJokeFunction CurrencyExchangeFunction"  # Space-separated string of Lambda functions
-    REGION: "us-east-1"  # AWS region for deployment
+    FRONTEND_S3_BUCKET: "deployedapas"
+    LAMBDA_FUNCTIONS: "GetNewsFromAPI weatherLambda TriviaQuestionsFunction TellJokeFunction CurrencyExchangeFunction"
+    REGION: "us-east-1"
 
 phases:
   install:
     runtime-versions:
-      python: 3.8  # Modify this to your specific Python runtime version
+      python: 3.8
     commands:
       - echo "Installing Python dependencies for Lambda functions"
       - cd backend
-      #- pip install -r requirements.txt -t .  # Install dependencies for Lambda functions
-      - cd ../frontend  # Correct path to the frontend directory
+      - cd ../frontend
       - echo "No npm needed, just copying HTML files"
 
   pre_build:
     commands:
       - echo "Running Pre-Build Commands"
-      - echo "Current directory in pre_build:"
       - pwd
-      - echo "Listing files in pre_build:"
       - ls -al
-  
+
   build:
     commands:
-      - echo "Building backend (Lambda) and frontend"
+      - echo "Building backend and syncing frontend"
       - cd ../backend
-      - zip -r /tmp/lambda-functions.zip .  # Create a zip package of the backend Lambda functions
+      - zip -r /tmp/lambda-functions.zip .
       - cd ../frontend
-      - aws s3 sync . s3://$FRONTEND_S3_BUCKET/  # Sync all frontend files (HTML, CSS, JS) to S3
-      - cd ../backend/  # Go  to the backend directory
-      - cp appspec.yml /tmp/  # Ensure appspec.yml is included in the ZIP
+      - aws s3 sync . s3://$FRONTEND_S3_BUCKET/
+      - cd ../../
 
   post_build:
     commands:
-      - echo "Running Post-Build Commands"
-      - echo "Deploying Lambda functions"
+      - echo "Deploying Lambda functions directly"
       - |
         for function in $LAMBDA_FUNCTIONS; do
+          echo "Deploying $function..."
           aws lambda update-function-code --function-name $function --zip-file fileb:///tmp/lambda-functions.zip --region $REGION
         done
       - echo "Deployment complete!"
 
 artifacts:
   files:
-    - lambda-functions.zip  # Lambda function deployment package
-    - appspec.yml  # Include appspec.yml file in the artifact
-  base-directory: /tmp  # Specify where the artifact is located 
-  discard-paths: yes  # Optionally discard paths from the artifact location
+    - lambda-functions.zip
+  base-directory: /tmp
+  discard-paths: yes
