@@ -1,3 +1,4 @@
+
 version: 0.0
 
 Resources:
@@ -7,8 +8,6 @@ Resources:
         Name: "CurrencyExchangeFunction"
         Alias: "Live"
         CurrentVersion: "$LATEST"
-        Code:
-          S3Location: 's3://deployedapas/lambda-functions.zip'
 
   - TargetService:
       Type: AWS::Lambda::Function
@@ -16,8 +15,6 @@ Resources:
         Name: "TellJokeFunction"
         Alias: "Live"
         CurrentVersion: "$LATEST"
-        Code:
-          S3Location: 's3://deployedapas/lambda-functions.zip'
 
   - TargetService:
       Type: AWS::Lambda::Function
@@ -25,8 +22,6 @@ Resources:
         Name: "TriviaQuestionsFunction"
         Alias: "Live"
         CurrentVersion: "$LATEST"
-        Code:
-          S3Location: 's3://deployedapas/lambda-functions.zip'
 
   - TargetService:
       Type: AWS::Lambda::Function
@@ -34,8 +29,6 @@ Resources:
         Name: "weatherLambda"
         Alias: "Live"
         CurrentVersion: "$LATEST"
-        Code:
-          S3Location: 's3://deployedapas/lambda-functions.zip'
 
   - TargetService:
       Type: AWS::Lambda::Function
@@ -43,5 +36,3 @@ Resources:
         Name: "GetNewsFromAPI"
         Alias: "Live"
         CurrentVersion: "$LATEST"
-        Code:
-          S3Location: 's3://deployedapas/lambda-functions.zip'
