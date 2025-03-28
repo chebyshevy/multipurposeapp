@@ -2,7 +2,7 @@ version: 0.2
 
 env:
   variables:
-    FRONTEND_S3_BUCKET: "deployedapas"
+    FRONTEND_S3_BUCKET: "app.sahsanlab.click"
     LAMBDA_FUNCTIONS: "GetNewsFromAPI weatherLambda TriviaQuestionsFunction TellJokeFunction CurrencyExchangeFunction"
     REGION: "us-east-1"
 
